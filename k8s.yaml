@@ -57,3 +57,7 @@ spec:
             value: "authentication.global-bank.svc.cluster.local/auth-ms"
           - name: feign.url-transaction-service
             value: "transaction.global-bank.svc.cluster.local/transaction-ms"
+          - name: spring.jpa.hibernate.ddl-auto
+            value: "create"  
+          - name: spring.jpa.generate-ddl
+            value: "true"              
