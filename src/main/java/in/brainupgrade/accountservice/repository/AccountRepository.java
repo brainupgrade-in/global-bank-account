@@ -19,7 +19,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 	/*
 	 * method to get account from database
 	 */
-	@Query(nativeQuery = true, value = "SELECT * from ACCOUNT a WHERE a.account_Id = :accountId")
+	@Query(nativeQuery = false, value = "SELECT a from Account a WHERE a.accountId = :accountId")
 	Account findByAccountId(@Param(value = "accountId") long accountId);
 
 	/*
