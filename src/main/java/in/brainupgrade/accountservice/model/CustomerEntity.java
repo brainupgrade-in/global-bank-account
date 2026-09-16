@@ -1,7 +1,8 @@
 package in.brainupgrade.accountservice.model;
 
 import java.sql.Date;
-import javax.persistence.Table;
+
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

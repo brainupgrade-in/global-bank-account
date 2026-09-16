@@ -1,6 +1,6 @@
 package in.brainupgrade.accountservice.model;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package in.brainupgrade.accountservice.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ import in.brainupgrade.accountservice.model.AccountInput;
 import in.brainupgrade.accountservice.model.Transaction;
 import in.brainupgrade.accountservice.model.TransactionInput;
 import in.brainupgrade.accountservice.service.AccountServiceImpl;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -54,10 +54,10 @@ public class AccountController {
 	 */
 
 	@GetMapping("/getAccount/{accountId}")
-	@ApiOperation(value = "Find account by id", notes = "Provide account id to get the specific account", response = Account.class)
+	@Operation(summary = "Find account by id", description = "Provide account id to get the specific account")
 	public ResponseEntity<Account> getAccount(
-			@ApiParam(value = "Token for authentication", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "Id of the account whose detail is to be retrieved", required = true) @PathVariable long accountId) {
+			@Parameter(description = "Token for authentication", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "Id of the account whose detail is to be retrieved", required = true) @PathVariable long accountId) {
 		accountServiceImpl.hasPermission(token);
 		Account accountReturnObject = accountServiceImpl.getAccount(accountId);
 		log.info("Account Details Returned Sucessfully");
@@ -75,11 +75,11 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("/createAccount/{customerId}")
-	@ApiOperation(value = "Create Account", notes = "Create account by providing the customer id  and token in the header", response = AccountCreationStatus.class)
+	@Operation(summary = "Create Account", description = "Create account by providing the customer id  and token in the header")
 	public ResponseEntity<?> createAccount(
-			@ApiParam(value = "Token for authentication", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "Id of customer", required = true) @PathVariable String customerId,
-			@ApiParam(value = "Account details for validation and creating account", required = true)  @RequestBody Account account) {
+			@Parameter(description = "Token for authentication", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "Id of customer", required = true) @PathVariable String customerId,
+			@Parameter(description = "Account details for validation and creating account", required = true) @RequestBody Account account) {
 
 		log.info(account.toString());
 		log.info(customerId);
@@ -105,10 +105,10 @@ public class AccountController {
 	 * @return
 	 */
 	@GetMapping("/getAccounts/{customerId}")
-	@ApiOperation(value = "Get Account Details ", notes = "Get all the account details of a particular customer", response = Account.class)
+	@Operation(summary = "Get Account Details ", description = "Get all the account details of a particular customer")
 	public ResponseEntity<List<Account>> getCustomerAccount(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "id of customer whose account details is to be retrieved", required = true) @PathVariable String customerId) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "id of customer whose account details is to be retrieved", required = true) @PathVariable String customerId) {
 		accountServiceImpl.hasPermission(token);
 		log.info("Account List Returned");
 		return new ResponseEntity<>(accountServiceImpl.getCustomerAccount(token, customerId), HttpStatus.OK);
@@ -125,10 +125,10 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("/deposit")
-	@ApiOperation(value = "Deposit Amount ", notes = "To deposit cash in the account")
+	@Operation(summary = "Deposit Amount ", description = "To deposit cash in the account")
 	public ResponseEntity<Account> deposit(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "Account details", required = true) @RequestBody AccountInput accInput) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "Account details", required = true) @RequestBody AccountInput accInput) {
 		accountServiceImpl.hasPermission(token);
 		transactionFeign.makeDeposit(token, accInput);
 		Account newUpdateAccBal = accountServiceImpl.updateDepositBalance(accInput);
@@ -149,10 +149,10 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("/withdraw")
-	@ApiOperation(value = "Withdraw Amount ", notes = "To withdraw cash from the account")
+	@Operation(summary = "Withdraw Amount ", description = "To withdraw cash from the account")
 	public ResponseEntity<Account> withdraw(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "Account Details", required = true) @RequestBody AccountInput accInput) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "Account Details", required = true) @RequestBody AccountInput accInput) {
 		accountServiceImpl.hasPermission(token);
 		try {
 			transactionFeign.makeWithdraw(token, accInput);
@@ -176,10 +176,10 @@ public class AccountController {
 	 */
 
 	@PostMapping("/servicecharge")
-	@ApiOperation(value = "Service Charge ", notes = "Service Charge to be cut for not maintaining the minimum balance ")
+	@Operation(summary = "Service Charge ", description = "Service Charge to be cut for not maintaining the minimum balance ")
 	public ResponseEntity<Account> servicecharge(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "Account Details", required = true) @RequestBody AccountInput accInput) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "Account Details", required = true) @RequestBody AccountInput accInput) {
 		accountServiceImpl.hasPermission(token);
 		try {
 			transactionFeign.makeServiceCharges(token, accInput);
@@ -205,10 +205,10 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("/transaction")
-	@ApiOperation(value = "Transfer amount ", notes = "Transfers amount from source acc to target acc ")
+	@Operation(summary = "Transfer amount ", description = "Transfers amount from source acc to target acc ")
 	public ResponseEntity<String> transaction(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "details required for transfer", required = true) @RequestBody TransactionInput transInput) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "details required for transfer", required = true) @RequestBody TransactionInput transInput) {
 		
 		log.info(transInput.toString());
 		accountServiceImpl.hasPermission(token);
@@ -243,10 +243,10 @@ public class AccountController {
 	 * This controller is called by Customer-Ms for Checking Balance in the Account
 	 */
 	@PostMapping("/checkBalance")
-	@ApiOperation(value = "Checks Balance ", notes = "Checks balance in the account ")
+	@Operation(summary = "Checks Balance ", description = "Checks balance in the account ")
 	public ResponseEntity<Account> checkAccountBalance(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
-			@ApiParam(value = "Account Details", required = true) @Valid @RequestBody AccountInput accountInput) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token,
+			@Parameter(description = "Account Details", required = true) @Valid @RequestBody AccountInput accountInput) {
 		accountServiceImpl.hasPermission(token);
 		Account account = accountServiceImpl.getAccount(accountInput.getAccountId());
 		return new ResponseEntity<>(account, HttpStatus.OK);
@@ -257,9 +257,9 @@ public class AccountController {
 	 * 
 	 */
 	@GetMapping("/find")
-	@ApiOperation(value = "Get All Accounts ", notes = "Provides" + " a list of all the accounts ")
+	@Operation(summary = "Get All Accounts ", description = "Provides a list of all the accounts ")
 	public ResponseEntity<List<Account>> getAllAccount(
-			@ApiParam(value = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token) {
+			@Parameter(description = "token for authentication passed in header", required = true) @RequestHeader("Authorization") String token) {
 		accountServiceImpl.hasPermission(token);
 		List<Account> account = accountServiceImpl.getAllAccounts();
 		return new ResponseEntity<>(account, HttpStatus.OK);

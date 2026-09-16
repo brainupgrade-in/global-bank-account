@@ -1,7 +1,7 @@
 package in.brainupgrade.accountservice.model;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
