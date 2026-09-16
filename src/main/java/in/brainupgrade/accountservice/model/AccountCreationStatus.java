@@ -1,24 +1,48 @@
 package in.brainupgrade.accountservice.model;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 public class AccountCreationStatus {
-
 	/**
-	 *  AccountCreationStatus for returning response
+	 * AccountCreationStatus for returning response
 	 */
 	@Id
 	private long accountId;
 	private String message;
 
+	public AccountCreationStatus() {
+	}
 
+	/**
+	 * Creates a new {@code AccountCreationStatus} instance.
+	 *
+	 * @param accountId AccountCreationStatus for returning response
+	 * @param message
+	 */
+	public AccountCreationStatus(final long accountId, final String message) {
+		this.accountId = accountId;
+		this.message = message;
+	}
+
+	/**
+	 * AccountCreationStatus for returning response
+	 */
+	public long getAccountId() {
+		return this.accountId;
+	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	/**
+	 * AccountCreationStatus for returning response
+	 */
+	public void setAccountId(final long accountId) {
+		this.accountId = accountId;
+	}
+
+	public void setMessage(final String message) {
+		this.message = message;
+	}
 }

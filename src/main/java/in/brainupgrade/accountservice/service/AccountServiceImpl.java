@@ -2,10 +2,8 @@ package in.brainupgrade.accountservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import in.brainupgrade.accountservice.exceptionhandling.AccessDeniedException;
 import in.brainupgrade.accountservice.exceptionhandling.AccountNotFoundException;
 import in.brainupgrade.accountservice.feignclient.AuthFeignClient;
@@ -15,22 +13,17 @@ import in.brainupgrade.accountservice.model.AccountCreationStatus;
 import in.brainupgrade.accountservice.model.AccountInput;
 import in.brainupgrade.accountservice.model.AuthenticationResponse;
 import in.brainupgrade.accountservice.repository.AccountRepository;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 public class AccountServiceImpl implements AccountService {
-
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AccountServiceImpl.class);
 	/**
 	 * Class used Implementing account service -> Service Layer class
 	 */
-
 	@Autowired
 	private AuthFeignClient authFeignClient;
-
 	@Autowired
 	private AccountRepository accountRepository;
-
 	@Autowired
 	private TransactionFeign transactionFeign;
 
@@ -40,8 +33,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountCreationStatus createAccount(String customerId, Account account) {
 		accountRepository.save(account);
-		AccountCreationStatus accountCreationStatus = new AccountCreationStatus(account.getAccountId(),
-				"Sucessfully Created");
+		AccountCreationStatus accountCreationStatus = new AccountCreationStatus(account.getAccountId(), "Sucessfully Created");
 		log.info("Account Created Sucessfully");
 		return accountCreationStatus;
 	}
@@ -106,10 +98,8 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AuthenticationResponse hasEmployeePermission(String token) {
 		AuthenticationResponse validity = authFeignClient.getValidity(token);
-		if (!authFeignClient.getRole(validity.getUserid()).equals("EMPLOYEE"))
-			throw new AccessDeniedException("NOT ALLOWED");
-		else
-			return validity;
+		if (!authFeignClient.getRole(validity.getUserid()).equals("EMPLOYEE")) throw new AccessDeniedException("NOT ALLOWED");
+		 else return validity;
 	}
 
 	/*
@@ -118,10 +108,8 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AuthenticationResponse hasCustomerPermission(String token) {
 		AuthenticationResponse validity = authFeignClient.getValidity(token);
-		if (!authFeignClient.getRole(validity.getUserid()).equals("CUSTOMER"))
-			throw new AccessDeniedException("NOT ALLOWED");
-		else
-			return validity;
+		if (!authFeignClient.getRole(validity.getUserid()).equals("CUSTOMER")) throw new AccessDeniedException("NOT ALLOWED");
+		 else return validity;
 	}
 
 	@Override
@@ -130,9 +118,8 @@ public class AccountServiceImpl implements AccountService {
 		try {
 			return accountRepository.findAll();
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
+		// TODO: handle exception
 		return new ArrayList<>();
 	}
-
 }
