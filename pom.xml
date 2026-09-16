@@ -20,7 +20,7 @@
 		<lombok.version>1.18.42</lombok.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<spring-cloud.version>2025.0.0</spring-cloud.version>
-		<jacoco.version>0.8.3</jacoco.version>
+		<jacoco.version>0.8.14</jacoco.version>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -37,15 +37,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
