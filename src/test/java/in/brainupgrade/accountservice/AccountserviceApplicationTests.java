@@ -34,4 +34,12 @@ class AccountserviceApplicationTests {
 				.isEqualTo(HttpStatus.OK);
 	}
 
+	@Test
+	void exposesOnlyExpectedActuatorEndpoints() {
+		assertThat(restTemplate.getForEntity("http://localhost:" + port + "/account/actuator/info", String.class)
+				.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(restTemplate.getForEntity("http://localhost:" + port + "/account/actuator/beans", String.class)
+				.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
 }
