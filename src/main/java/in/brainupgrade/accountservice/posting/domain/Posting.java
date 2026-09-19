@@ -37,6 +37,9 @@ public class Posting {
     @Column(nullable = false)
     private LocalDate valueDate;
 
+    @Column(nullable = false)
+    private LocalDate settlementDate;
+
     private String narrative;
 
     @Enumerated(EnumType.STRING)
@@ -50,7 +53,8 @@ public class Posting {
     }
 
     public Posting(String id, String clientReference, String debitAccountId, String creditAccountId,
-                   long amountMinor, String currency, LocalDate valueDate, String narrative) {
+                   long amountMinor, String currency, LocalDate valueDate, LocalDate settlementDate,
+                   String narrative) {
         this.id = id;
         this.clientReference = clientReference;
         this.debitAccountId = debitAccountId;
@@ -58,6 +62,7 @@ public class Posting {
         this.amountMinor = amountMinor;
         this.currency = currency;
         this.valueDate = valueDate;
+        this.settlementDate = settlementDate;
         this.narrative = narrative;
         this.status = PostingStatus.POSTED;
         this.createdAt = Instant.now();
@@ -89,6 +94,10 @@ public class Posting {
 
     public LocalDate getValueDate() {
         return valueDate;
+    }
+
+    public LocalDate getSettlementDate() {
+        return settlementDate;
     }
 
     public String getNarrative() {

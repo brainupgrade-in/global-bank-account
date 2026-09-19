@@ -33,6 +33,7 @@ public class PostingController {
                 request.getCreditAccountId(),
                 request.getAmountMinor(),
                 request.getValueDate(),
+                request.getSettlementDate(),
                 request.getNarrative());
         return ResponseEntity.status(HttpStatus.CREATED).body(new PostingResponse(posting));
     }

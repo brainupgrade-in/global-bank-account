@@ -21,6 +21,8 @@ public class PostingRequest {
 
     private LocalDate valueDate;
 
+    private LocalDate settlementDate;
+
     @Size(max = 140)
     private String narrative;
 
@@ -62,6 +64,14 @@ public class PostingRequest {
 
     public void setValueDate(LocalDate valueDate) {
         this.valueDate = valueDate;
+    }
+
+    public LocalDate getSettlementDate() {
+        return settlementDate;
+    }
+
+    public void setSettlementDate(LocalDate settlementDate) {
+        this.settlementDate = settlementDate;
     }
 
     public String getNarrative() {

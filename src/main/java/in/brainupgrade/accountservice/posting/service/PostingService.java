@@ -30,7 +30,8 @@ public class PostingService {
 
     @Transactional
     public Posting post(String clientReference, String debitAccountId, String creditAccountId,
-                        long amountMinor, LocalDate valueDate, String narrative) {
+                        long amountMinor, LocalDate valueDate, LocalDate settlementDate,
+                        String narrative) {
 
         if (!Money.isPositive(amountMinor)) {
             throw new InvalidAmountException("Amount must be greater than zero");
@@ -55,10 +56,13 @@ public class PostingService {
 
         String currency = debit.getCurrency();
         LocalDate effectiveValueDate = valueDate != null ? valueDate : LocalDate.now();
+        if (settlementDate == null) {
+            settlementDate = LocalDate.now();
+        }
 
         Posting posting = new Posting(UUID.randomUUID().toString(), clientReference,
                 debitAccountId, creditAccountId, amountMinor, currency,
-                effectiveValueDate, narrative);
+                effectiveValueDate, settlementDate, narrative);
         postingRepository.save(posting);
 
         ledgerEntryRepository.save(new LedgerEntry(posting.getId(), debitAccountId,

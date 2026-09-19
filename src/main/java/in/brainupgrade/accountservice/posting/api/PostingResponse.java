@@ -13,6 +13,7 @@ public class PostingResponse {
     private final long amountMinor;
     private final String currency;
     private final LocalDate valueDate;
+    private final LocalDate settlementDate;
     private final String narrative;
     private final String status;
     private final Instant createdAt;
@@ -25,6 +26,7 @@ public class PostingResponse {
         this.amountMinor = posting.getAmountMinor();
         this.currency = posting.getCurrency();
         this.valueDate = posting.getValueDate();
+        this.settlementDate = posting.getSettlementDate();
         this.narrative = posting.getNarrative();
         this.status = posting.getStatus().name();
         this.createdAt = posting.getCreatedAt();
@@ -56,6 +58,10 @@ public class PostingResponse {
 
     public LocalDate getValueDate() {
         return valueDate;
+    }
+
+    public LocalDate getSettlementDate() {
+        return settlementDate;
     }
 
     public String getNarrative() {
