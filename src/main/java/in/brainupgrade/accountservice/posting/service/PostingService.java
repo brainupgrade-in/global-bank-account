@@ -30,6 +30,13 @@ public class PostingService {
 
     @Transactional
     public Posting post(String clientReference, String debitAccountId, String creditAccountId,
+                        long amountMinor, LocalDate valueDate, String narrative) {
+        return post(clientReference, debitAccountId, creditAccountId, amountMinor,
+                valueDate, null, narrative);
+    }
+
+    @Transactional
+    public Posting post(String clientReference, String debitAccountId, String creditAccountId,
                         long amountMinor, LocalDate valueDate, LocalDate settlementDate,
                         String narrative) {
 
@@ -56,13 +63,11 @@ public class PostingService {
 
         String currency = debit.getCurrency();
         LocalDate effectiveValueDate = valueDate != null ? valueDate : LocalDate.now();
-        if (settlementDate == null) {
-            settlementDate = LocalDate.now();
-        }
+        LocalDate effectiveSettlementDate = settlementDate != null ? settlementDate : effectiveValueDate;
 
         Posting posting = new Posting(UUID.randomUUID().toString(), clientReference,
                 debitAccountId, creditAccountId, amountMinor, currency,
-                effectiveValueDate, settlementDate, narrative);
+                effectiveValueDate, effectiveSettlementDate, narrative);
         postingRepository.save(posting);
 
         ledgerEntryRepository.save(new LedgerEntry(posting.getId(), debitAccountId,
