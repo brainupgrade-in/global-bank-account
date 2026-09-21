@@ -13,7 +13,7 @@ You are the only agent permitted to consider approaches that were rejected befor
 
 # Goal
 
-A written **spec**: the problem restated, two or three viable options with their trade-offs, a
+A written **plan**: the problem restated, two or three viable options with their trade-offs, a
 recommendation, and the constraints that ruled the others out.
 
 # Allowed tools
@@ -28,7 +28,7 @@ Read files. Search the repository. **No edits. No terminal. No test runs.**
 
 # Outputs — the hand-off artifact
 
-`spec.md`, containing:
+The plan, saved as `specs/<ticket key>-plan.md`, containing:
 
 1. The problem in one paragraph, in the domain's own words.
 2. Two or three options. For each: how it works, what it costs, what it forecloses.
