@@ -28,7 +28,7 @@ class PostingServiceTest {
     @Test
     void postsBothSidesOfTheEntry() {
         Posting posting = postingService.post("PAY-0001", "ACC-CLIENT-001", "ACC-FEES",
-                12_34L, LocalDate.of(2026, 3, 1), "Advisory fee");
+                12_34L, LocalDate.of(2026, 3, 1), null, "Advisory fee");
 
         assertThat(posting.getId()).isNotBlank();
         assertThat(posting.getCurrency()).isEqualTo("INR");
@@ -39,21 +39,29 @@ class PostingServiceTest {
     @Test
     void rejectsANonPositiveAmount() {
         assertThatThrownBy(() -> postingService.post("PAY-0002", "ACC-CLIENT-001", "ACC-FEES",
-                0L, LocalDate.of(2026, 3, 1), "Nothing"))
+                0L, LocalDate.of(2026, 3, 1), null, "Nothing"))
                 .isInstanceOf(InvalidAmountException.class);
     }
 
     @Test
     void rejectsAnUnknownAccount() {
         assertThatThrownBy(() -> postingService.post("PAY-0003", "ACC-NOPE", "ACC-FEES",
-                100L, LocalDate.of(2026, 3, 1), "Missing"))
+                100L, LocalDate.of(2026, 3, 1), null, "Missing"))
                 .isInstanceOf(UnknownAccountException.class);
     }
 
     @Test
     void rejectsACrossCurrencyPosting() {
         assertThatThrownBy(() -> postingService.post("PAY-0004", "ACC-CLIENT-001", "ACC-USD-001",
-                100L, LocalDate.of(2026, 3, 1), "Cross currency"))
+                100L, LocalDate.of(2026, 3, 1), null, "Cross currency"))
                 .isInstanceOf(CurrencyMismatchException.class);
+    }
+
+    @Test
+    void storesTheSettlementDateWhenSupplied() {
+        Posting posting = postingService.post("PAY-0005", "ACC-CLIENT-001", "ACC-FEES",
+                12_34L, LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 3), "Advisory fee");
+
+        assertThat(posting.getSettlementDate()).isEqualTo(LocalDate.of(2026, 3, 3));
     }
 }
