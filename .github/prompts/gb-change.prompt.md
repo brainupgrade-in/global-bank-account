@@ -5,8 +5,8 @@ argument-hint: ticket=GB-nnn goal=...
 ---
 Follow the account-change skill.
 
-Read course/labs/lab-keys.md to find my Jira key for ${input:ticket}. Read that issue, with its
-comments and links, using the atlassian MCP tools. Never read the .env file.
+Find the GitHub issue in this repository whose title starts with ${input:ticket}. Read that issue,
+with its comments and links, using the github MCP tools. Never read the .env file.
 
 Ticket: ${input:ticket}
 Goal:   ${input:goal}
